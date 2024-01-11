@@ -14,11 +14,14 @@ import androidx.navigation.compose.rememberNavController
 import com.example.messengerapplication.presentation.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import com.example.messengerapplication.ui.theme.MessengerApplicationTheme
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 @AndroidEntryPoint
 class StartActivity: FragmentActivity() {
 
     private lateinit var navHostController: NavHostController
+    private var firebaseUser: FirebaseUser? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +35,19 @@ class StartActivity: FragmentActivity() {
                     }
                 }
             }
+        }
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    override fun onStart() {
+        super.onStart()
+
+        firebaseUser = FirebaseAuth.getInstance().currentUser
+
+        if (firebaseUser != null) {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 

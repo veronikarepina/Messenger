@@ -6,5 +6,5 @@ sealed class AuthViewModelEvent: BaseViewModelEvent {
 
     data object SuccessfulAuthEvent: AuthViewModelEvent()
 
-    class ErrorAuthEvent(val message: String, val code: Int) : AuthViewModelEvent()
+    class ErrorAuthEvent(val message: String) : AuthViewModelEvent()
 }

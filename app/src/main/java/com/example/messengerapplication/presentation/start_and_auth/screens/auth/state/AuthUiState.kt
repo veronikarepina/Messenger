@@ -4,7 +4,15 @@ import com.example.messengerapplication.base.BaseUiState
 
 sealed class AuthUiState: BaseUiState {
 
-    data object SignIn: AuthUiState()
+    data class SignIn(
+        val isLoading: Boolean = false,
+        val isSuccess: String = "",
+        val isError: String = ""
+    ): AuthUiState()
 
-    data object SignUp: AuthUiState()
+    data class SignUp(
+        val isLoading: Boolean = false,
+        val isSuccess: String = "",
+        val isError: String = ""
+    ): AuthUiState()
 }

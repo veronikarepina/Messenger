@@ -21,12 +21,14 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun SplashScreen(
     navController: NavController,
+    startMainActivity: () -> Unit,
     viewModel: SplashViewModel = hiltViewModel()
 ) {
     LaunchedEffect(key1 = null) {
         viewModel.vmEvent.collectLatest {
             when (it) {
-                is SplashViewModelEvent.NavigationEvent -> navigate(it.route, navController)
+                is SplashViewModelEvent.NavigationToAuthEvent -> navigate(it.route, navController)
+                is SplashViewModelEvent.NavigationToMainEvent -> startMainActivity.invoke()
             }
         }
     }
