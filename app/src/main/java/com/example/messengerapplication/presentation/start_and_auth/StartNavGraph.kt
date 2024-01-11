@@ -14,10 +14,10 @@ fun StartNavGraph(
 ) {
     NavHost(navController = navHostController, startDestination = StartScreens.Splash.route) {
         composable(route = StartScreens.Splash.route) {
-            SplashScreen(navController = navHostController)
+            SplashScreen(navController = navHostController, startMainActivity = startMainActivity)
         }
         composable(route = StartScreens.Auth.route) {
-            AuthScreen(startMainActivity = { startMainActivity.invoke() })
+            AuthScreen(startMainActivity = startMainActivity)
         }
     }
 }

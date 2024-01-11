@@ -81,7 +81,7 @@ fun AuthScreen(
 
         Spacer(modifier = Modifier.height(40.dp))
 
-        if (uiState == AuthUiState.SignUp) {
+        if (uiState == AuthUiState.SignUp()) {
             TextFieldItem(
                 placeholder = stringResource(id = R.string.user_name), 
                 value = userName.value, 
@@ -108,7 +108,7 @@ fun AuthScreen(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
         )
 
-        if (uiState == AuthUiState.SignUp) {
+        if (uiState == AuthUiState.SignUp()) {
             Spacer(modifier = Modifier.height(15.dp))
 
             TextFieldItem(
@@ -141,11 +141,11 @@ fun AuthScreen(
                 is AuthUiState.SignUp -> stringResource(id = R.string.sign_up) },
             onClick = {
                 when (uiState) {
-                    is AuthUiState.SignIn -> viewModel.postUiEvent(AuthUiEvent.SendAuthEvent(
+                    is AuthUiState.SignIn -> viewModel.postUiEvent(AuthUiEvent.AuthUserEvent(
                         email = email.value,
                         password = password.value
                     ))
-                    is AuthUiState.SignUp -> viewModel.postUiEvent(AuthUiEvent.SendRegisterEvent(
+                    is AuthUiState.SignUp -> viewModel.postUiEvent(AuthUiEvent.RegisterUserEvent(
                         userName = userName.value,
                         email = email.value,
                         password = password.value,

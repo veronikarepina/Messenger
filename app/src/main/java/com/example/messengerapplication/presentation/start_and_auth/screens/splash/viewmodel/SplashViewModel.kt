@@ -18,14 +18,21 @@ class SplashViewModel @Inject constructor(): ViewModel() {
     val vmEvent: SharedFlow<SplashViewModelEvent> = _vmEvent.asSharedFlow()
 
     init {
-        tryLogin()
+        openLoginScreen()
     }
 
-    private fun tryLogin() {
+    private fun openLoginScreen() {
         viewModelScope.launch {
             delay(1000L)
             val route = StartScreens.Auth.route
-            _vmEvent.emit(SplashViewModelEvent.NavigationEvent(route = route))
+            _vmEvent.emit(SplashViewModelEvent.NavigationToAuthEvent(route = route))
+        }
+    }
+
+    private fun openMainScreen(startMainActivity: () -> Unit) {
+        viewModelScope.launch {
+            delay(1000L)
+            _vmEvent.emit(SplashViewModelEvent.NavigationToMainEvent)
         }
     }
 }

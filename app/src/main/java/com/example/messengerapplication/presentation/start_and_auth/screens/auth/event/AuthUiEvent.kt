@@ -6,9 +6,9 @@ sealed class AuthUiEvent: BaseUiEvent {
 
     data object ChangeUiStateEvent: AuthUiEvent()
 
-    data class SendAuthEvent(val email: String, val password: String): AuthUiEvent()
+    data class AuthUserEvent(val email: String, val password: String): AuthUiEvent()
 
-    data class SendRegisterEvent(
+    data class RegisterUserEvent(
         val userName: String,
         val email: String,
         val password: String,

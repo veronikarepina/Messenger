@@ -4,5 +4,6 @@ import com.example.messengerapplication.base.BaseViewModelEvent
 
 sealed class SplashViewModelEvent: BaseViewModelEvent {
 
-    class NavigationEvent(val route: String): SplashViewModelEvent()
+    data class NavigationToAuthEvent(val route: String): SplashViewModelEvent()
+    data object NavigationToMainEvent: SplashViewModelEvent()
 }
