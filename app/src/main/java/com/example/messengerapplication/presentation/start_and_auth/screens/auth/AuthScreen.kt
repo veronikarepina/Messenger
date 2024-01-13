@@ -1,5 +1,7 @@
 package com.example.messengerapplication.presentation.start_and_auth.screens.auth
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -28,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -47,7 +50,7 @@ fun AuthScreen(
     startMainActivity: () -> Unit,
     viewModel: AuthViewModel = hiltViewModel()
 ) {
-    
+    val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsState()
 
     val userName = remember { mutableStateOf("") }
@@ -59,7 +62,8 @@ fun AuthScreen(
         viewModel.vmEvent.collectLatest {
             when(it) {
                 is AuthViewModelEvent.SuccessfulAuthEvent -> startMainActivity.invoke()
-                is AuthViewModelEvent.ErrorAuthEvent -> {}
+                is AuthViewModelEvent.ErrorDataVerification -> handleValidationError(it.errorType, context)
+                is AuthViewModelEvent.ErrorAuthEvent -> showErrorMessage(it.message, context)
             }
         }
     }
@@ -258,4 +262,27 @@ private fun MainButton(text: String, onClick: () -> Unit) {
             color = colorResource(id = R.color.black)
         )
     }
+}
+
+private fun handleValidationError(message: AuthViewModel.ValidationDataResult.Error, context: Context) {
+    when (message) {
+        is AuthViewModel.ValidationDataResult.Error.UserNameIsEmpty ->
+            showErrorMessage(context.getString(R.string.user_name_is_empty), context)
+        is AuthViewModel.ValidationDataResult.Error.EmailIsEmpty ->
+            showErrorMessage(context.getString(R.string.email_is_empty), context)
+        is AuthViewModel.ValidationDataResult.Error.EmailIsInvalid ->
+            showErrorMessage(context.getString(R.string.email_is_invalid), context)
+        is AuthViewModel.ValidationDataResult.Error.PasswordIsEmpty ->
+            showErrorMessage(context.getString(R.string.password_is_empty), context)
+        is AuthViewModel.ValidationDataResult.Error.PasswordConfirmIsEmpty ->
+            showErrorMessage(context.getString(R.string.password_confirm_is_empty), context)
+        is AuthViewModel.ValidationDataResult.Error.PasswordMismatch ->
+            showErrorMessage(context.getString(R.string.password_mismatch), context)
+        is AuthViewModel.ValidationDataResult.Error.PasswordInvalid ->
+            showErrorMessage(context.getString(R.string.password_invalid), context)
+    }
+}
+
+private fun showErrorMessage(message: String, context: Context) {
+    Toast.makeText(context, message, Toast.LENGTH_LONG).show()
 }
