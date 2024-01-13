@@ -3,6 +3,7 @@ package com.example.messengerapplication.di
 import com.example.messengerapplication.data.AuthRepositoryImpl
 import com.example.messengerapplication.domain.AuthRepository
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,5 +22,11 @@ object AppModule {
     @Singleton
     fun providesAuthRepositoryImpl(firebaseAuth: FirebaseAuth): AuthRepository {
         return AuthRepositoryImpl(firebaseAuth)
+    }
+
+    @Provides
+    @Singleton
+    fun providesFirebaseUser(firebaseAuth: FirebaseAuth): FirebaseUser? {
+        return firebaseAuth.currentUser
     }
 }
